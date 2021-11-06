@@ -6,131 +6,113 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 23:00:44 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/03 19:28:34 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/06 21:13:02 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-// #define BUFFER_SIZE 42
+#include "get_next_line_bonus.h"
 
-static void	if_free(char **p1, char **p2);
-static int	find_n(const char *s);
-static int	split_str(char *tmp, char **str, char **save, size_t location_n);
+static void	ft_free(char **p);
+static bool	split_by_n(char *total, char **line, char **save, char *location_n);
 static char	*read_line(int fd, char *buf, char **save, ssize_t bufsize);
+static char	*ft_strchr_dx(const char *s, int c);
 
 char	*get_next_line(int fd)
 {
-	char		*str;
 	char		*buf;
-	static char	*save[FOPEN_MAX];
+	static char	*keep_lines[FOPEN_MAX + 1] = {NULL};
 	ssize_t		bufsize;
 
 	if (0 > fd || fd > FOPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	buf = (char *)malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
-	if (!buf)
-		return (NULL);
-	bufsize = read(fd, buf, BUFFER_SIZE);
-	if (!save[fd] && bufsize > 0)
+	if (buf == NULL)
 	{
-		save[fd] = ft_strdup("");
+		ft_free(&keep_lines[fd]);
+		return (NULL);
 	}
-	str = read_line(fd, buf, &save[fd], bufsize);
-	return (str);
+	bufsize = read(fd, buf, BUFFER_SIZE);
+	if (keep_lines[fd] == NULL && bufsize > 0)
+		keep_lines[fd] = ft_strdup("");
+	return (read_line(fd, buf, &keep_lines[fd], bufsize));
 }
 
 static char	*read_line(int fd, char *buf, char **save, ssize_t bufsize)
 {
-	char		*tmp;
-	char		*str;
+	char		*total;
+	char		*line;
 
-	str = ft_strjoin("", *save);
-	if_free(NULL, save);
-	if (!str)
+	line = ft_strjoin("", *save);
+	ft_free(save);
+	if (line == NULL)
 		bufsize = 0;
-	if (str && bufsize == 0 && (find_n(str) || *str == '\n'))
-		split_str(ft_strdup(str), &str, save, find_n(str));
+	else if (line && bufsize == 0)
+		split_by_n(line, &line, save, ft_strchr_dx(line, '\n'));
 	while (bufsize > 0)
 	{
 		buf[bufsize] = '\0';
-		tmp = ft_strjoin(str, buf);
-		if (split_str(tmp, &str, save, find_n(tmp)))
+		total = ft_strjoin(line, buf);
+		if (split_by_n(total, &line, save, ft_strchr_dx(total, '\n')))
 			break ;
-		if_free(&str, NULL);
-		str = tmp;
+		ft_free(&line);
+		line = total;
 		bufsize = read(fd, buf, BUFFER_SIZE);
 	}
-	free (buf);
-	return (str);
+	if (bufsize == -1)
+		ft_free (&line);
+	ft_free (&buf);
+	return (line);
 }
 
-static int	split_str(char *tmp, char **str, char **save, size_t location_n)
+static bool	split_by_n(char *total, char **line, char **save, char *location_n)
 {
-	if (!tmp)
+	if (total == NULL)
 	{
-		if_free(str, save);
+		ft_free(line);
 		return (1);
 	}
-	if (location_n == 0 && *tmp != '\n')
+	if (location_n == NULL)
 		return (0);
-	if_free(str, NULL);
-	*str = ft_substr(tmp, 0, location_n + 1);
-	*save = ft_substr(tmp, (location_n + 1), ft_strlen(tmp) - (location_n + 1));
-	if (!*str || !*save)
-		if_free(str, save);
+	if (total != *line)
+		ft_free(line);
+	*line = ft_substr(total, 0, ft_strlen(total) - ft_strlen(location_n + 1));
+	*save = ft_strdup(location_n + 1);
+	if (*line == NULL || *save == NULL)
+	{
+		ft_free(line);
+		ft_free(save);
+	}
 	else if (ft_strlen(*save) == 0)
-		if_free(save, NULL);
-	free (tmp);
+		ft_free(save);
+	ft_free (&total);
 	return (1);
 }
 
-int	find_n(const char *s)
+char	*ft_strchr_dx(const char *s, int c)
 {
-	int	i;
+	size_t	i;
+	char	*ss;
 
+	if (s == NULL)
+		return (NULL);
+	ss = (char *)s;
 	i = 0;
-	while (((char *)s)[i] != '\0')
+	while (ss[i])
 	{
-		if (((char *)s)[i] == '\n')
-			return (i);
+		if (ss[i] == (char)c)
+			return (&ss[i]);
 		i++;
 	}
-	return (0);
+	if ((char)c == '\0')
+		return (&ss[i]);
+	return (NULL);
 }
 
-static void	if_free(char **p1, char **p2)
+static void	ft_free(char **p)
 {
-	if (p1)
+	if (p)
 	{
-		free(*p1);
-		*p1 = NULL;
-	}
-	if (p2)
-	{
-		free (*p2);
-		*p2 = NULL;
+		free(*p);
+		*p = NULL;
 	}
 }
-
-// int	main()
-// {
-// 	int fd = open("test.txt", O_RDONLY );
-// 	if (fd == -1)
-// 	{
-// 		printf("ファイルオープンエラー\n");
-// 		return (0);
-// 	}
-// 	char	*result;
-// 	int		i = 1;
-// 	while (1)
-// 	{
-// 		result = get_next_line(fd);
-// 		printf("result%d = %s",i++, result);
-// 		if (!result)
-// 			break ;
-// 		free (result);
-// 	}
-// 	close(fd); 
-// 	system ("leaks a.out"); 
-// 	return (0);
-// }

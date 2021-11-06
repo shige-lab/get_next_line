@@ -6,7 +6,7 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 00:43:40 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/06 19:50:00 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/06 21:44:23 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_H
 
 # include <stdlib.h>
-# include <fcntl.h>
 # include <unistd.h>
 # include <stdbool.h>
 

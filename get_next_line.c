@@ -6,7 +6,7 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 23:00:44 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/06 21:33:44 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/06 21:36:03 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static bool	split_by_n(char *total, char **line, char **save, char *location_n)
 	return (1);
 }
 
-char	*ft_strchr_dx(const char *s, int c)
+static char	*ft_strchr_dx(const char *s, int c)
 {
 	size_t	i;
 	char	*ss;

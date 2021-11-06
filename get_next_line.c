@@ -6,7 +6,7 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 23:00:44 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/06 19:53:35 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/06 21:33:44 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	ft_free(char **p);
 static bool	split_by_n(char *total, char **line, char **save, char *location_n);
-static char	*read_line(int fd, char *buf, char **save, ssize_t bufsize);
+static char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize);
 static char	*ft_strchr_dx(const char *s, int c);
 
 char	*get_next_line(int fd)
@@ -34,10 +34,10 @@ char	*get_next_line(int fd)
 	bufsize = read(fd, buf, BUFFER_SIZE);
 	if (keep_lines == NULL && bufsize > 0)
 		keep_lines = ft_strdup("");
-	return (read_line(fd, buf, &keep_lines, bufsize));
+	return (get_one_line(fd, buf, &keep_lines, bufsize));
 }
 
-static char	*read_line(int fd, char *buf, char **save, ssize_t bufsize)
+static char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize)
 {
 	char		*total;
 	char		*line;

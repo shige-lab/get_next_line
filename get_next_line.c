@@ -6,16 +6,16 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 23:00:44 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/06 21:36:03 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/07 10:20:39 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static void	ft_free(char **p);
-static bool	split_by_n(char *total, char **line, char **save, char *location_n);
-static char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize);
-static char	*ft_strchr_dx(const char *s, int c);
+void	ft_free(char **p);
+bool	split_by_n(char *total, char **line, char **save, char *location_n);
+char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize);
+char	*ft_strchr_dx(const char *s, int c);
 
 char	*get_next_line(int fd)
 {
@@ -37,7 +37,7 @@ char	*get_next_line(int fd)
 	return (get_one_line(fd, buf, &keep_lines, bufsize));
 }
 
-static char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize)
+char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize)
 {
 	char		*total;
 	char		*line;
@@ -64,15 +64,15 @@ static char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize)
 	return (line);
 }
 
-static bool	split_by_n(char *total, char **line, char **save, char *location_n)
+bool	split_by_n(char *total, char **line, char **save, char *location_n)
 {
 	if (total == NULL)
 	{
 		ft_free(line);
-		return (1);
+		return (true);
 	}
 	if (location_n == NULL)
-		return (0);
+		return (false);
 	if (total != *line)
 		ft_free(line);
 	*line = ft_substr(total, 0, ft_strlen(total) - ft_strlen(location_n + 1));
@@ -85,10 +85,10 @@ static bool	split_by_n(char *total, char **line, char **save, char *location_n)
 	else if (ft_strlen(*save) == 0)
 		ft_free(save);
 	ft_free (&total);
-	return (1);
+	return (true);
 }
 
-static char	*ft_strchr_dx(const char *s, int c)
+char	*ft_strchr_dx(const char *s, int c)
 {
 	size_t	i;
 	char	*ss;
@@ -108,7 +108,7 @@ static char	*ft_strchr_dx(const char *s, int c)
 	return (NULL);
 }
 
-static void	ft_free(char **p)
+void	ft_free(char **p)
 {
 	if (p)
 	{

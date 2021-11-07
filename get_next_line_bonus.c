@@ -6,14 +6,14 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 23:00:44 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/07 10:19:52 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/07 10:38:12 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
 void	ft_free(char **p);
-bool	split_by_n(char *total, char **line, char **save, char *location_n);
+int		split_by_n(char *total, char **line, char **save, char *location_n);
 char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize);
 char	*ft_strchr_dx(const char *s, int c);
 
@@ -64,15 +64,15 @@ char	*get_one_line(int fd, char *buf, char **save, ssize_t bufsize)
 	return (line);
 }
 
-bool	split_by_n(char *total, char **line, char **save, char *location_n)
+int	split_by_n(char *total, char **line, char **save, char *location_n)
 {
 	if (total == NULL)
 	{
 		ft_free(line);
-		return (true);
+		return (1);
 	}
 	if (location_n == NULL)
-		return (false);
+		return (0);
 	if (total != *line)
 		ft_free(line);
 	*line = ft_substr(total, 0, ft_strlen(total) - ft_strlen(location_n + 1));
@@ -85,7 +85,7 @@ bool	split_by_n(char *total, char **line, char **save, char *location_n)
 	else if (ft_strlen(*save) == 0)
 		ft_free(save);
 	ft_free (&total);
-	return (true);
+	return (1);
 }
 
 char	*ft_strchr_dx(const char *s, int c)

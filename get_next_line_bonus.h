@@ -6,7 +6,7 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 14:52:12 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/07 10:22:18 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/07 10:37:13 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdbool.h>
 
 # define FOPEN_MAX 256
 # ifndef BUFFER_SIZE

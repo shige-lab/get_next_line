@@ -6,11 +6,11 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 00:45:03 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/03 19:32:58 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/07 23:44:23 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

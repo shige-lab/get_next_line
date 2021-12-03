@@ -6,7 +6,7 @@
 /*   By: tshigena <tshigena@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 23:00:44 by tshigena          #+#    #+#             */
-/*   Updated: 2021/11/07 10:38:12 by tshigena         ###   ########.fr       */
+/*   Updated: 2021/11/23 13:17:42 by tshigena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ char	*ft_strchr_dx(const char *s, int c);
 char	*get_next_line(int fd)
 {
 	char		*buf;
-	static char	*keep_lines[FOPEN_MAX + 1] = {NULL};
+	static char	*keep_lines[FOPEN_MAX] = {NULL};
 	ssize_t		bufsize;
 
-	if (0 > fd || fd > FOPEN_MAX || BUFFER_SIZE <= 0)
+	if (0 > fd || fd > FOPEN_MAX - 1 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buf = (char *)malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (buf == NULL)
